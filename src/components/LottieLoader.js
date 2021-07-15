@@ -3,18 +3,15 @@ import { StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import constants from '../constants';
 
-const LottieLoader = (props) => (
-
-   // props.isLoading
-   true
-     ? <LottieView
-        source={constants.images.lottieLoader}
-        autoPlay
-        loop
-        style={styles.loaderStyle}
-    /> : null
-
-);
+function LottieLoader() {
+    return (
+        <LottieView
+            source={constants.images.lottieLoader}
+            autoPlay
+            loop
+            style={styles.loaderStyle}
+        />)
+}
 
 const styles = StyleSheet.create({
     loaderStyle: {

@@ -11,12 +11,14 @@ import {
 
 } from 'react-native';
 import WeatherHome from './src/container/WeatherHome';
+import { Provider } from 'react-redux';
+import store from './src/redux_modules/Store';
 
 const App = () => {
   return (
-    <SafeAreaView >
+    <Provider store={store}>
       <WeatherHome />
-    </SafeAreaView>
+     </Provider>
   );
 };
 

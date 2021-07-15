@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Platform, PermissionsAndroid, ToastAndroid } from 'react-native';
+import { Text, View, Platform, PermissionsAndroid, ToastAndroid, StyleSheet, FlatList } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { create } from 'apisauce'
+import { useSelector, useDispatch } from 'react-redux';
+import { SAVE_WEATHER_DATA } from '../redux_modules/type';
+import LottieLoader from "../components/LottieLoader";
+
 function WeatherHome() {
     const [state, setState] = useState({
-        location: '',
         locationData: {},
         isLocationLoading: false,
     })
+    const weatherData = useSelector(state => state.data)
+    const dispatch = useDispatch()
+
     const url = 'http://api.openweathermap.org/'
     useEffect(() => {
         getLocation()
+        console.log('Store data', weatherData)
     }, [])
 
     const getLocation = async () => {
@@ -96,21 +103,69 @@ function WeatherHome() {
             },
         })
         api
-            .get('/data/2.5/forecast/daily?' +
+            .get('/data/2.5/weather?' +
                 'lat=' + coords?.latitude +
                 '&lon=' +
                 coords?.longitude +
                 '&cnt=' + 10 +
-                '&appid=a06f88b08950ff9766cd6b4ce437c0e5')
-            .then(response => console.log(response))
-            .then(console.log)
+                // 'q='+'London,uk'+
+                '&appid=d54fcf5fca82fa199c6765c4ea8145b3')
+            .then(response => {
+                console.log(response.data)
+                dispatch({ type: SAVE_WEATHER_DATA, weatherData: response.data })
+            })
+
 
     }
     return (
-        < View >
-            <Text>WeatherHome</Text>
+        < View style={styles.container} >
+            <View style={styles.upperBox}>
+                <Text style={styles.txt}>
+                    {weatherData?.main?.temp}
+                </Text>
+                <Text style={[styles.txt, { fontSize: 40 }]}>
+                    {weatherData?.name}
+                </Text>
+            </View>
+            <View>
+                <FlatList
+                    data={weatherData?.name}
+                    keyExtractor={(item)=>(item+index).toString()}
+                    renderItem={() => {
+                        return (
+                            <View style={{ width: '100%', justifyContent: 'space-between' }}>
+                                <Text style={styles.txt}>
+                                    {weatherData?.main?.temp}
+                                </Text>
+                                <Text style={[styles.txt, { fontSize: 40 }]}>
+                                    {weatherData?.name}
+                                </Text>
+                            </View>
+                        )
+                    }}
+                />
+            </View>
+            {/* <LottieLoader/> */}
         </View >
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+    },
+    upperBox: {
+        height: '40%',
+        width: '100%',
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    txt: {
+        fontSize: 40
+    }
+})
 
 export default WeatherHome;
