@@ -1,22 +1,21 @@
 /**
- * Sample React Native App
+ * React Native App
  * https://github.com/facebook/react-native
  *
- * @format
- * @flow strict-local
  */
 
 import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
+
 } from 'react-native';
-import LottieLoader from './src/components/LottieLoader';
+import WeatherHome from './src/container/WeatherHome';
 
 const App = () => {
   return (
     <SafeAreaView >
-      <LottieLoader />
+      <WeatherHome />
     </SafeAreaView>
   );
 };

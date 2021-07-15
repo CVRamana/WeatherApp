@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
-import { Text, View } from 'react-native';
-
+import React, { useEffect,useState } from 'react';
+import { Text, View,Platform,PermissionsAndroid,ToastAndroid } from 'react-native';
+import Geocoder from 'react-native-geocoding';
+import Geolocation from 'react-native-geolocation-service';
 function WeatherHome() {
     const [state, setState] = useState({
         location: '',
@@ -48,7 +49,7 @@ function WeatherHome() {
         const long = coords.longitude;
 
         //@ts-ignore
-        Geocoder.init(googleAPIKey, { language: "en" });
+        Geocoder.init('AIzaSyBcbkKQqrkjSKNmkq_2ke83nqkyniogrnQ', { language: "en" });
         //@ts-ignore
         Geocoder.from(
             lat, long)
