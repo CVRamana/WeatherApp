@@ -1,14 +1,14 @@
-import React, { useEffect,useState } from 'react';
-import { Text, View,Platform,PermissionsAndroid,ToastAndroid } from 'react-native';
-import Geocoder from 'react-native-geocoding';
+import React, { useEffect, useState } from 'react';
+import { Text, View, Platform, PermissionsAndroid, ToastAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import { create } from 'apisauce'
 function WeatherHome() {
     const [state, setState] = useState({
         location: '',
         locationData: {},
         isLocationLoading: false,
     })
-
+    const url = 'http://api.openweathermap.org/'
     useEffect(() => {
         getLocation()
     }, [])
@@ -19,8 +19,10 @@ function WeatherHome() {
             setState({ ...state, isLocationLoading: true })
             Geolocation.getCurrentPosition(
                 (info) => {
+                    state.locationData = info.coords
+                    setState({ ...state })
                     console.log('get the location::', info);
-                    getAddress(info.coords)
+                    getWeatherData(info.coords)
                 },
                 (error) => {
                     console.log('err in current loc', error);
@@ -44,30 +46,6 @@ function WeatherHome() {
         }
     }
 
-    const getAddress = (coords) => {
-        const lat = coords.latitude;
-        const long = coords.longitude;
-
-        //@ts-ignore
-        Geocoder.init('AIzaSyBcbkKQqrkjSKNmkq_2ke83nqkyniogrnQ', { language: "en" });
-        //@ts-ignore
-        Geocoder.from(
-            lat, long)
-            .then((res) => {
-                setState({
-                    ...state,
-                    isLocationLoading: false
-                })
-            })
-            .catch((error) => {
-                console.warn(error)
-                setState({
-                    ...state,
-                    isLocationLoading: false
-                })
-            });
-
-    }
 
     const hasLocationPermission = async () => {
         if (Platform.OS === 'ios') {
@@ -110,6 +88,24 @@ function WeatherHome() {
         return false;
     };
 
+    const getWeatherData = (coords) => {
+        const api = create({
+            baseURL: url,
+            headers: {
+                Accept: 'application/vnd.github.v3+json',
+            },
+        })
+        api
+            .get('/data/2.5/forecast/daily?' +
+                'lat=' + coords?.latitude +
+                '&lon=' +
+                coords?.longitude +
+                '&cnt=' + 10 +
+                '&appid=a06f88b08950ff9766cd6b4ce437c0e5')
+            .then(response => console.log(response))
+            .then(console.log)
+
+    }
     return (
         < View >
             <Text>WeatherHome</Text>
