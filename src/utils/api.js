@@ -1,16 +1,15 @@
 import { create } from 'apisauce'
-// define the api
-const api = create({
-    baseURL: 'https://api.github.com',
-    headers: { Accept: 'application/vnd.github.v3+json' },
-})
-// api
-//     .get('/repos/skellock/apisauce/commits')
-//     .then(response => response.data[0].commit.message)
-//     .then(console.log)
 
-// // customizing headers per-request
-// api.post('/users', { name: 'steve' }, { headers: { 'x-gigawatts': '1.21' } })
+
+const url = 'https://openweathermap.org'
+const apiKey='d54fcf5fca82fa199c6765c4ea8145b3'
+
+const api = create({
+    baseURL: url,
+    headers: {
+        Accept: 'application/vnd.github.v3+json',
+    },
+})
 
 //for making POST Api calls
 
@@ -36,7 +35,7 @@ const getApiCall = (endPoint, params, successCallback, errorCallback) => {
             errorCallback(error);
         })
 }
-export default{
+export default {
     postApiCall,
     getApiCall
 }
