@@ -5,7 +5,9 @@ import constants from '../constants';
 
 const LottieLoader = (props) => (
 
-    props.isLoading ? <LottieView
+   // props.isLoading
+   true
+     ? <LottieView
         source={constants.images.lottieLoader}
         autoPlay
         loop
