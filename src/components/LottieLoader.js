@@ -5,6 +5,7 @@ import constants from '../constants';
 
 function LottieLoader() {
     return (
+        
         <LottieView
             source={constants.images.lottieLoader}
             autoPlay
