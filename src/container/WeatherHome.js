@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Platform, PermissionsAndroid, ToastAndroid, StyleSheet, FlatList } from 'react-native';
+import { Text, View, Platform, PermissionsAndroid, ToastAndroid, StyleSheet, FlatList, Button } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { create } from 'apisauce'
 import { useSelector, useDispatch } from 'react-redux';
@@ -117,6 +117,7 @@ function WeatherHome() {
 
 
     }
+    if((weatherData.name)){
     return (
         < View style={styles.container} >
             <View style={styles.upperBox}>
@@ -147,7 +148,18 @@ function WeatherHome() {
             </View>
             {/* <LottieLoader/> */}
         </View >
-    )
+    )}else{
+        return(
+            <View style={styles.upperBox}>
+               <Text style={[styles.txt, { fontSize: 40 }]}>
+                                   Something went wrong try again later.
+                                </Text> 
+                <Button
+                title={'Try Again'}
+                onPress={()=>getWeatherData()}/>
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({

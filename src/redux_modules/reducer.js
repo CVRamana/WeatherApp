@@ -2,7 +2,7 @@ import {SAVE_WEATHER_DATA} from "./type";
 
 const initialState = {
    data:{
-       hi:'Raman'
+      
    }
 };
 const reducer = (state = initialState, action) => {
